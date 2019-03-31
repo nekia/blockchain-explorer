@@ -107,6 +107,32 @@ $ source e2e-test/bin/activate
   (e2e-test) $ behave --no-capture ./explorer.feature
   ```
 
+* To execute only a certain scenario
+  ```
+  # Specify with line number
+  (e2e-test) $ behave ./explorer.feature:111
+  ```
+  or
+  ```
+  # Specify with tag
+  (e2e-test) $ behave --tags=@basic ./explorer.feature
+  ```
+
+* To preserve the test runtime environment without clean up when finishing test
+  ```diff
+  --- a/feature/explorer.feature
+  +++ b/feature/explorer.feature
+  @@ -145,7 +149,7 @@ Scenario: [balance-transfer] Register a new user and enroll successfully
+      Then the response parameter "status" should equal 200
+
+  @basic
+  -# @doNotDecompose
+  +@doNotDecompose
+  Scenario: [first-network] Not supported to register a new user and enroll
+      Given I start first-network
+      Given the NETWORK_PROFILE environment variable is first-network
+  ```
+
 # Project Structure
 
 Feature files are intended to locate in `/feature` folder. Corresponding steps are located in `/feature/steps`.
@@ -139,7 +165,23 @@ feature/
 
     +-- config.json                     // Configuration file for Hyperledger Explorer
 
++-- explorer-configs/                   // Configuration and Profile for each scenario
+                                        // You can specify which environments should be in use on each scenario by defining NETWORK_PROFILE env variable
+
+    +-- config-${NETWORK_PROFILE}.json  // Configuration of Explorer for each network
+
     +-- connection-profile/             // Profiles for each network
+
+        +-- ${NETWORK_PROFILE}.json
+
++-- fabric-samples/         // Cloned from fabric-samples repo with tag:v1.4.0
+                            // Some docker-compose files and scripts are modified a little bit for this BDD env
+
+    +-- balance-transfer/   
+
+    +-- first-network/
+
+    +-- chaincode/
 
 +-- steps/
 
@@ -153,7 +195,7 @@ feature/
 
 ```
 
-Mainly we'll update `steps/explorer_impl.py` and `steps/json_responses.py` to cover more scenarios.
+Mainly we'll update `explorer.feature`, `steps/explorer_impl.py` and `steps/json_responses.py` to cover more scenarios.
 
 # Link
 
