@@ -23,10 +23,10 @@ jobs:
       secureFile: 'passwd.txt'
   - script: 'cat $(mySecureFile.secureFilePath) | docker login --username $(DOCKERHUBID) --password-stdin'
     displayName: Login to Docker
-  - script: 'docker run --rm --privileged multiarch/qemu-user-static:register --reset'
-    displayName: Register QEMU binary
-  - script: ./build_docker_image_rpi3.sh
-    displayName: Build Docker Images
+  - script: |
+      docker run --rm --privileged multiarch/qemu-user-static:register --reset
+      ./build_docker_image_rpi3.sh
+    displayName: Build Docker Images for arm64v8
   - script: docker tag hyperledger/explorer $(DOCKERHUBID)/explorer:$(git describe --abbrev=0 --tags | cut -d 'v' -f 2)
     displayName: Tag Explorer Image
   - script: docker tag hyperledger/explorer-db $(DOCKERHUBID)/explorer-db:$(git describe --abbrev=0 --tags | cut -d 'v' -f 2)
