@@ -20,11 +20,13 @@ function banner(){
 
 function deploy_build_database(){
 	echo "Building Hyperledger Fabric Database image..."
+	docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
 	docker build -f postgres-Dockerfile-rpi3 --tag $FABRIC_EXPLORER_DB_TAG .
 }
 
 function deploy_build_explorer(){
 	echo "Building Hyperledger Fabric explorer image..."
+	docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
 	docker build -f Dockerfile-rpi3 --tag $FABRIC_EXPLORER_TAG .
 }
 
