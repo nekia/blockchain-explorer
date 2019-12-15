@@ -3,6 +3,8 @@
 
 # Hyperledger Explorer [![join the chat][rocketchat-image]][rocketchat-url]
 
+**Azure Pipeline デモ for Qiita Advent calendar 2019**
+
 [rocketchat-url]:https://chat.hyperledger.org/channel/hyperledger-explorer
 [rocketchat-image]:https://open.rocket.chat/images/join-chat.svg
 [![Build Status](https://dev.azure.com/Hyperledger/blockchain-explorer/_apis/build/status/hyperledger.blockchain-explorer?branchName=master)](https://dev.azure.com/Hyperledger/blockchain-explorer/_build/latest?definitionId=41&branchName=master)
