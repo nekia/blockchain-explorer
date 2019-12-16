@@ -24,16 +24,16 @@ jobs:
   - script: 'cat $(mySecureFile.secureFilePath) | docker login --username $(DOCKERHUBID) --password-stdin'
     displayName: Login to Docker
   - script: ./build_docker_image_rpi3.sh
-    displayName: Build Docker Images for arm64v8
-  - script: docker tag hyperledger/explorer $(DOCKERHUBID)/explorer:$(git describe --abbrev=0 --tags | cut -d 'v' -f 2)
+    displayName: Build Docker Images for arm32v7
+  - script: docker tag hyperledger/explorer $(DOCKERHUBID)/explorer:$(git describe --abbrev=0 --tags | cut -d 'v' -f 2)-arm
     displayName: Tag Explorer Image
-  - script: docker tag hyperledger/explorer-db $(DOCKERHUBID)/explorer-db:$(git describe --abbrev=0 --tags | cut -d 'v' -f 2)
+  - script: docker tag hyperledger/explorer-db $(DOCKERHUBID)/explorer-db:$(git describe --abbrev=0 --tags | cut -d 'v' -f 2)-arm
     displayName: Tag Explorer DB Image
   - script: docker push $(DOCKERHUBID)/explorer
     displayName: Push Explorer Latest Image
   - script: docker push $(DOCKERHUBID)/explorer-db
     displayName: Push Explorer DB Latest Image
-  - script: docker push $(DOCKERHUBID)/explorer:$(git describe --abbrev=0 --tags | cut -d 'v' -f 2)
+  - script: docker push $(DOCKERHUBID)/explorer:$(git describe --abbrev=0 --tags | cut -d 'v' -f 2)-arm
     displayName: Push Explorer Versioned Image
-  - script: docker push $(DOCKERHUBID)/explorer-db:$(git describe --abbrev=0 --tags | cut -d 'v' -f 2)
+  - script: docker push $(DOCKERHUBID)/explorer-db:$(git describe --abbrev=0 --tags | cut -d 'v' -f 2)-arm
     displayName: Push Explorer DB Versioned Image

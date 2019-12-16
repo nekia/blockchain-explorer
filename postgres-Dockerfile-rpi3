@@ -3,7 +3,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-FROM arm64v8/postgres:10.4-alpine
+FROM arm32v7/postgres:10.11-alpine
 
 # default database name for HLF Explorer db connection
 ENV DATABASE_DATABASE 	fabricexplorer

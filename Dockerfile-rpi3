@@ -3,7 +3,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-FROM arm64v8/node:8.15.0-alpine
+FROM arm32v7/node:8.15.0
 
 # default values pf environment variables
 # that are used inside container
@@ -26,23 +26,11 @@ WORKDIR $DEFAULT_WORKDIR
 # copy external data to container
 COPY . $EXPLORER_APP_PATH
 
-# install required dependencies by NPM packages:
-# current dependencies are: python, make, g++
-
-RUN apk add --no-cache --virtual npm-deps python make g++ && \
-    python -m ensurepip && \
-    rm -r /usr/lib/python*/ensurepip && \
-    pip install --upgrade pip setuptools && \
-	rm -r /root/.cache
-
 # install NPM dependencies
-RUN cd $EXPLORER_APP_PATH && npm install && npm build
+RUN cd $EXPLORER_APP_PATH && npm install
 
 # build explorer app
-RUN cd $EXPLORER_APP_PATH && cd client && npm install && yarn build
-
-# remove installed packages to free space
-RUN apk del npm-deps
+RUN cd $EXPLORER_APP_PATH && cd client && npm install && npm install browserslist caniuse-lite && npm run build
 
 # expose default ports
 EXPOSE 8080
