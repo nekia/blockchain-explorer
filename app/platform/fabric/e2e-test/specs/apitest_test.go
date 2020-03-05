@@ -152,8 +152,13 @@ var _ = Describe("REST API Test Suite", func() {
 		})
 
 		It("get network list", func() {
+			type NetworkEntry struct {
+				Name        string `json:"name"`
+				AuthEnabled bool   `json:"authEnabled"`
+			}
+
 			type NetworklistInfo struct {
-				NetworkList [][]interface{} `json:"networkList"`
+				NetworkList []NetworkEntry `json:"networkList"`
 			}
 
 			// Create a Resty Client
@@ -169,7 +174,7 @@ var _ = Describe("REST API Test Suite", func() {
 			result := resp.Result().(*NetworklistInfo)
 			list := []string{}
 			for _, val := range result.NetworkList {
-				list = append(list, val[0].(string))
+				list = append(list, val.Name)
 			}
 			Expect(list).Should(HaveLen(1))
 			Expect(list).Should(ContainElements([]string{"org1-network"}))
