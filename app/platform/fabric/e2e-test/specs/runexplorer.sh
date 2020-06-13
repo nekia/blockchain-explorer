@@ -85,16 +85,4 @@ export EXPLORER_SYNC_BLOCKSYNCTIME_SEC=5
 ./start.sh
 echo "#### Starting Explorer process ..."
 
-rc=1
-starttime=$(date +%s)
-while
-  [[ "$(($(date +%s) - starttime))" -lt "$TIMEOUT" ]] && [[ $rc -ne 0 ]];
-do
-  sleep $DELAY
-  set -x
-  cat logs/console/console.log 2>/dev/null | grep -q "Please open web browser to access"
-  rc=$?
-  set +x
-done
-echo "#### Started Explorer process"
 popd

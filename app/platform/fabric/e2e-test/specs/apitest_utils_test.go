@@ -3,7 +3,6 @@ package apitest
 import (
 	"fmt"
 	"log"
-	"os"
 	"os/exec"
 	"strconv"
 	"strings"
@@ -16,10 +15,7 @@ import (
 )
 
 func findKeywordInConsoleLog(keyword string) bool {
-	cwd, _ := os.Getwd()
-	os.Chdir(relativePahtToRoot)
-	defer os.Chdir(cwd)
-	arg := fmt.Sprintf(`cat logs/console/console.log | grep "%s" | wc -l`, keyword)
+	arg := fmt.Sprintf(`docker logs explorer.mynetwork.com | grep "%s" | wc -l`, keyword)
 	cmd := exec.Command("sh", "-c", arg)
 	result, err := cmd.Output()
 	if err != nil {

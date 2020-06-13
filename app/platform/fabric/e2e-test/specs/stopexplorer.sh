@@ -15,7 +15,7 @@ while getopts "k" opt; do
   esac
 done
 
-pushd ${ROOTPATH}
+pushd ${SCRIPTPATH}/..
 
 ./stop.sh
 if [ $CLEANUP -eq 1 ]; then

@@ -183,7 +183,6 @@ var _ = Describe("REST API Test Suite - Single profile", func() {
 			cmd := exec.Command("bash", "./runexplorer.sh", "-m", "single")
 			err := cmd.Start()
 			Expect(err).NotTo(HaveOccurred())
-			Eventually(isExplorerReady, 60, 5).Should(Equal(true))
 
 			time.Sleep(waitSyncInterval * time.Second)
 		})
@@ -439,7 +438,6 @@ var _ = Describe("REST API Test Suite - Multiple profile", func() {
 			cmd := exec.Command("bash", "./runexplorer.sh", "-m", "multi")
 			err := cmd.Start()
 			Expect(err).NotTo(HaveOccurred())
-			Eventually(isExplorerReady, 60, 5).Should(Equal(true))
 
 			time.Sleep(waitSyncInterval * time.Second)
 		})
@@ -699,75 +697,31 @@ var _ = Describe("REST API Test Suite - Multiple profile", func() {
 			})
 		})
 
-		// It("get status of peers within org2channel", func() {
-		// 	resp := restGetWithToken("/api/peersStatus/"+"org2channel", &PeersStatusResp{}, token)
-		// 	result := resp.Result().(*PeersStatusResp)
-		// 	Expect(result.Status).Should(Equal(200))
-		// })
-
-		// It("get block activity", func() {
-		// 	resp := restGetWithToken("/api/blockActivity/"+channelGenesisHash, &BlockActivityResp{}, token)
-		// 	result := resp.Result().(*BlockActivityResp)
-		// 	Expect(result.Status).Should(Equal(200))
-		// 	Expect(result.Row[0].Channelname).Should(Equal("org2channel"))
-		// 	org2CurrentBlockNum = result.Row[0].Blocknum
-		// })
-
-		// It("Update block on org1channel and should not have any changes on org2channel", func() {
-		// 	resp := restGetWithToken("/blockActivity/"+channelGenesisHash,&
-		// 	action = "invoke"
-		// 	inputSpecPath = "apitest-input-multiprofile-invoke-org1.yml"
-		// 	err := testclient.Testclient(action, inputSpecPath)
-		// 	Expect(err).NotTo(HaveOccurred())
-
-		// 	resp := restGetWithToken("/api/blockActivity/"+channelGenesisHash, &BlockActivityResp{}, token)
-		// 	result := resp.Result().(*BlockActivityResp)
-		// 	Expect(result.Status).Should(Equal(200))
-		// 	Expect(result.Row[0].Channelname).Should(Equal("org2channel"))
-		// 	Expect(result.Row[0].Blocknum).Should(Equal(org2CurrentBlockNum))
-		// })
-
-		// It("Update block on org2channel and should have some changes on org2channel", func() {
-		// 	action = "invoke"
-		// 	inputSpecPath = "apitest-input-multiprofile-invoke-org2.yml"
-		// 	err := testclient.Testclient(action, inputSpecPath)
-		// 	Expect(err).NotTo(HaveOccurred())
-
-		// 	resp := restGetWithToken("/api/blockActivity/"+channelGenesisHash, &BlockActivityResp{}, token)
-		// 	result := resp.Result().(*BlockActivityResp)
-		// 	Expect(result.Status).Should(Equal(200))
-		// 	Expect(result.Row[0].Channelname).Should(Equal("org2channel"))
-		// 	Expect(result.Row[0].Blocknum).Should(Equal(org2CurrentBlockNum + 1))
-		// })
-
-		// XIt("register user", func() {
-		// 	resp := restPostWithToken("/api/register", map[string]interface{}{"user": "test", "password": "test", "affiliation": "department2", "role": "admin"}, &RegisterResp{}, token)
-		// 	resultRegister := resp.Result().(*RegisterResp)
-		// 	Expect(resultRegister.Status).Should(Equal(200))
-		// })
-
-		// XIt("login with newly registered user", func() {
-		// 	resp := restPost("/auth/login", map[string]interface{}{"user": "test", "password": "test", "network": "org2-network"}, &LoginResponse{})
-		// 	resultLogin := resp.Result().(*LoginResponse)
-
-		// 	Expect(resultLogin.User.Message).Should(Equal("logged in"))
-		// 	Expect(resultLogin.User.Name).Should(Equal("test"))
-		// })
-
-		// XIt("fail to register duplicate user", func() {
-		// 	resp := restPostWithToken("/api/register", map[string]interface{}{"user": "test", "password": "test", "affiliation": "department2", "role": "admin"}, &RegisterResp{}, token)
-		// 	resultRegister := resp.Result().(*RegisterResp)
-		// 	Expect(resultRegister.Status).Should(Equal(400))
-		// 	Expect(resultRegister.Message).Should(Equal("Error: already exists"))
-		// })
-
 		It("stop explorer", func() {
 			_, err := networkclient.ExecuteCommand("bash", []string{"./stopexplorer.sh"}, true)
 			Expect(err).NotTo(HaveOccurred())
 		})
 
 		It("Shutdown network", func() {
-			cleanupContainers(networkSpecPath)
+			err := launcher.Launcher("down", "docker", "", networkSpecPath)
+			Expect(err).NotTo(HaveOccurred())
+
+			dockerList := []string{"ps", "-aq", "-f", "status=exited"}
+			containerList, _ := networkclient.ExecuteCommand("docker", dockerList, false)
+			if containerList != "" {
+				list := strings.Split(containerList, "\n")
+				containerArgs := []string{"rm", "-f"}
+				containerArgs = append(containerArgs, list...)
+				networkclient.ExecuteCommand("docker", containerArgs, true)
+			}
+			ccimagesList := []string{"images", "-q", "--filter=reference=dev*"}
+			images, _ := networkclient.ExecuteCommand("docker", ccimagesList, false)
+			if images != "" {
+				list := strings.Split(images, "\n")
+				imageArgs := []string{"rmi", "-f"}
+				imageArgs = append(imageArgs, list...)
+				networkclient.ExecuteCommand("docker", imageArgs, true)
+			}
 		})
 	})
 
