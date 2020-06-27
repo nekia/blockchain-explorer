@@ -65,7 +65,7 @@ services:
     container_name: proms
     image: prom/prometheus:latest
     volumes:
-      - ./app/platform/fabric/artifacts/operations/balance-transfer/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./app/platform/fabric/artifacts/operations/prometheus_conf/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus-storage:/prometheus
     ports:
       - '9090:9090'
@@ -76,7 +76,7 @@ services:
     container_name: grafana
     image: grafana/grafana:latest
     volumes:
-      - ./app/platform/fabric/artifacts/operations/balance-transfer/balance-transfer-grafana-dashboard.json:/var/lib/grafana/dashboards/mydashboard.json
+      - ./app/platform/fabric/artifacts/operations/grafana_conf/dashboard.json:/var/lib/grafana/dashboards/mydashboard.json
       - ./app/platform/fabric/artifacts/operations/grafana_conf/provisioning:/etc/grafana/provisioning
       - grafana-storage:/var/lib/grafana
     ports:
