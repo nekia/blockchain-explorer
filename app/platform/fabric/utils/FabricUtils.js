@@ -134,18 +134,17 @@ async function generateDir() {
 async function generateBlockHash(header) {
 	const headerAsn = asn.define('headerAsn', function() {
 		this.seq().obj(
-			this.key('Number').int(),
+			this.key('Number').octstr(),
 			this.key('PreviousHash').octstr(),
 			this.key('DataHash').octstr()
 		);
 	});
 	logger.info('generateBlockHash', header.number.toString());
-	// ToDo: Need to handle Long data correctly. header.number {"low":3,"high":0,"unsigned":true}
 	const output = headerAsn.encode(
 		{
-			Number: parseInt(header.number.low),
-			PreviousHash: header.previous_hash,
-			DataHash: header.data_hash
+			Number: header.number.toString(),
+			PreviousHash: header.previous_hash.toString('hex'),
+			DataHash: header.data_hash.toString('hex')
 		},
 		'der'
 	);
