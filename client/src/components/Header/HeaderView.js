@@ -76,6 +76,13 @@ const styles = theme => {
 		background: 'linear-gradient(to right, rgb(236, 233, 252), #4d4575)'
 	};
 	return {
+		logoD: {
+			display: 'inline-flex',
+			width: '30px',
+			height: '30px',
+			verticalAlign: 'bottom',
+			background: 'url(../../static/images/logo.png) no-repeat'
+		},
 		logo: {
 			width: 260,
 			height: 50,
@@ -487,7 +494,8 @@ export class HeaderView extends Component {
 			{ to: '/blocks', label: 'BLOCKS' },
 			{ to: '/transactions', label: 'TRANSACTIONS' },
 			{ to: '/chaincodes', label: 'CHAINCODES' },
-			{ to: '/channels', label: 'CHANNELS' }
+			{ to: '/channels', label: 'CHANNELS' },
+			{ to: '/history', label: 'HISTORY' }
 		];
 
 		return (
