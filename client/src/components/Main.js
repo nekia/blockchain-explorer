@@ -13,6 +13,7 @@ import ChaincodeView from './View/ChaincodeView';
 import DashboardView from './View/DashboardView';
 import ChannelsView from './View/ChannelsView';
 import HistoryView from './View/HistoryView';
+import AdvQueryView from './View/AdvQueryView';
 import { chartSelectors } from '../state/redux/charts';
 import { tableOperations, tableSelectors } from '../state/redux/tables';
 import {
@@ -126,6 +127,10 @@ export const Main = props => {
 		currentChannel
 	};
 
+	const advQueryViewProps = {
+		currentChannel
+	};
+
 	return (
 		<Router>
 			<div className={classes.main}>
@@ -177,6 +182,13 @@ export const Main = props => {
 						path="/history"
 						render={routeprops => (
 							<HistoryView {...{ ...historyViewProps, ...routeprops }} />
+						)}
+					/>
+					<Private
+						exact
+						path="/advquery"
+						render={routeprops => (
+							<AdvQueryView {...{ ...advQueryViewProps, ...routeprops }} />
 						)}
 					/>
 					<Route exact render={routeprops => <PageNotFound {...routeprops} />} />

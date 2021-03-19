@@ -495,7 +495,8 @@ export class HeaderView extends Component {
 			{ to: '/transactions', label: 'TRANSACTIONS' },
 			{ to: '/chaincodes', label: 'CHAINCODES' },
 			{ to: '/channels', label: 'CHANNELS' },
-			{ to: '/history', label: 'HISTORY' }
+			{ to: '/history', label: 'HISTORY' },
+			{ to: '/advquery', label: 'ADVANCED QUERY' }
 		];
 
 		return (
