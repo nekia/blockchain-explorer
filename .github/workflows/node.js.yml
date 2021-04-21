@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x, 14.x]
+        node-version: [10.x, 12.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -28,5 +28,7 @@ jobs:
     - run: npm config set prefix ~/npm
     - run: npm install
     - run: npm run test
-    - run: cd ./client && npm install
-    - run: npm run test:ci -- -u --coverage
+    - name: Test client codebase
+      run: |
+        cd ./client && npm install
+        npm run test:ci -- -u --coverage
