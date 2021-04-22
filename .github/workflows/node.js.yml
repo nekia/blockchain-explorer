@@ -25,10 +25,49 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '3.x' # Version range or exact version of a Python version to use, using SemVer's version range syntax
+        architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
     - run: npm config set prefix ~/npm
-    - run: npm install
-    - run: npm run test
+#     - run: npm install
+#     - run: npm run test
     - name: Test client codebase
       run: |
         cd ./client && npm install
         npm run test:ci -- -u --coverage
+    - name: Create Cobertura Report
+      run: |
+        cd client
+        wget https://raw.github.com/eriwen/lcov-to-cobertura-xml/master/lcov_cobertura/lcov_cobertura.py
+        python lcov_cobertura.py ./coverage/lcov.info
+    - name: cobertura-report
+      uses: 5monkeys/cobertura-action@v8
+      with:
+        # The GITHUB_TOKEN for this repo
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        # Path to the cobertura file.
+        path: ./client/coverage.xml
+        minimum_coverage: 75
+
+  SanityChecks_v1_4:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+    - uses: actions/setup-go@v2.1.3
+      name: Setup Go environment
+    - uses: actions/setup-python@v2
+    - run: |
+        npm install
+        npm run e2e-api-test-v1
+      name: Run Sanity Checks for v1.4
