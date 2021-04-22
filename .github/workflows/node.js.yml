@@ -29,13 +29,13 @@ jobs:
       with:
         python-version: '3.x' # Version range or exact version of a Python version to use, using SemVer's version range syntax
         architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
-    - run: npm config set prefix ~/npm
-#     - run: npm install
-#     - run: npm run test
+    # - run: npm config set prefix ~/npm
+    - run: yarn install
+    - run: yarn run test
     - name: Test client codebase
       run: |
-        cd ./client && npm install
-        npm run test:ci -- -u --coverage
+        cd ./client && yarn install
+        yarn run test:ci -- -u --coverage
     - name: Create Cobertura Report
       run: |
         cd client
@@ -68,6 +68,6 @@ jobs:
       name: Setup Go environment
     - uses: actions/setup-python@v2
     - run: |
-        npm install
-        npm run e2e-api-test-v1
+        yarn install
+        yarn run e2e-api-test-v1
       name: Run Sanity Checks for v1.4
