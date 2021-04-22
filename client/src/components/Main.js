@@ -133,7 +133,7 @@ export const Main = props => {
 			let routePath = '/' + queryParams.get('tab');
 			history.replace(routePath);
 		}
-	}, []);
+	}, [props]);
 
 	function removeTransactionId() {
 		let windowUrl = window.location.search;
