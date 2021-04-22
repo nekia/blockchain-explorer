@@ -9,12 +9,12 @@ volumes:
 networks:
   mynetwork.com:
     external:
-      name: net_test
+      name: fabric_test
 
 services:
 
   explorerdb.mynetwork.com:
-    image: hyperledger/explorer-db:latest
+    image: hyperledger/explorer-db:1.1.5
     container_name: explorerdb.mynetwork.com
     hostname: explorerdb.mynetwork.com
     environment:
@@ -32,7 +32,7 @@ services:
       - mynetwork.com
 
   explorer.mynetwork.com:
-    image: hyperledger/explorer:latest
+    image: hyperledger/explorer:1.1.5
     container_name: explorer.mynetwork.com
     hostname: explorer.mynetwork.com
     environment:
@@ -48,7 +48,7 @@ services:
     volumes:
       - ./examples/net1/config.json:/opt/explorer/app/platform/fabric/config.json
       - ./examples/net1/connection-profile:/opt/explorer/app/platform/fabric/connection-profile
-      - /fabric-path/fabric-samples/test-network/organizations:/tmp/crypto
+      - /home/atsushi/dev/hyperledger/fabric-samples/test-network/organizations:/tmp/crypto
       - walletstore:/opt/explorer/wallet
     ports:
       - 8080:8080
