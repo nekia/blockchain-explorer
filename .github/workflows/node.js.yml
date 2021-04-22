@@ -54,6 +54,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GOPATH: ${{ github.workspace }}
+      PATH: ${{ github.workspace }}/bin:/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin:/usr/local/sbin
 
     strategy:
       matrix:
@@ -74,6 +75,8 @@ jobs:
         go get -u github.com/pkg/errors
         go get -u gopkg.in/yaml.v2
         go get -u github.com/onsi/gomega/...
+        echo $PATH
+        echo $GOPATH
     - uses: actions/setup-python@v2
     - run: |
         yarn install
