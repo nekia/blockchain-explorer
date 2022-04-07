@@ -48,7 +48,7 @@
 		"stompjs": "^2.3.3",
 		"swagger-ui-express": "^4.0.5",
 		"utf8-bytes": "0.0.1",
-		"winston": "^2.2.0",
+		"winston": "^3.3.0",
 		"ws": "^7.4.6",
 		"yn": "^4.0.0"
 	},
