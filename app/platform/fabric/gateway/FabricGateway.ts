@@ -1,6 +1,6 @@
 /*
  *SPDX-License-Identifier: Apache-2.0
- */
+ */ 
 
 import { X509Identity, Wallets, Gateway } from 'fabric-network';
 import * as fabprotos from 'fabric-protos';
