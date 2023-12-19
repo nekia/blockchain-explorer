@@ -37,7 +37,7 @@
 		"react-refetch": "^1.0.4",
 		"react-router": "^4.2.0",
 		"react-router-dom": "^4.2.2",
-		"react-scripts": "^4.0.3",
+		"react-scripts": "^5.0.0",
 		"react-select": "^1.2.1",
 		"react-slick": "^0.18.1",
 		"react-swipeable-views": "^0.13.9",
@@ -51,7 +51,7 @@
 		"redux-actions": "^0.9.1",
 		"redux-thunk": "^2.2.0",
 		"slick-carousel": "^1.8.1",
-		"superagent": "^5.0.5",
+		"superagent": "^7.0.2",
 		"typeface-roboto": "0.0.50"
 	},
 	"scripts": {
